@@ -7,7 +7,7 @@ package org.firstinspires.ftc.teamcode;
 public class Arm {
 
     public void arm(String name){
-    //test
+    //T2
     }
 
 }

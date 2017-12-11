@@ -29,11 +29,10 @@ public class Main extends OpMode
         left_drive = hardwareMap.dcMotor.get("left");
         right_drive = hardwareMap.dcMotor.get("right");
         Arm = hardwareMap.dcMotor.get("Arm");
-        Finger1 = hardwareMap.servo.get("Finger1");
-        Finger2 = hardwareMap.servo.get("Finger2");
+        Finger1 = hardwareMap.servo.get("rightFinger");
+        Finger2 = hardwareMap.servo.get("leftFinger");
         GemMover = hardwareMap.servo.get("GemMover");
     }
-
 
     @Override
     public void loop() {
@@ -46,17 +45,17 @@ public class Main extends OpMode
         //Forward
         left_drive.setPower(Left);
         right_drive.setPower(-Right);
-         if (Gas > 0){
-            if (Rotation >0) {
+
+            if (Rotation <0) {
                  //Turn Right
                  left_drive.setPower(Left);
                  right_drive.setPower(Right);
-             } else if (Rotation <0) {
+             } else if (Rotation >0) {
                  //Turn Left
                  left_drive.setPower(-Left);
                  right_drive.setPower(-Right);
              }
-         }
+
 
             ///Backward
 
@@ -65,7 +64,7 @@ public class Main extends OpMode
             left_drive.setPower(-Left2);
             right_drive.setPower(Right2);
 
-            if (reverse > 0) { //Maybe this if loop will fix reverse turning?
+
                 if (Rotation > 0) {
                     //Turn Left
                     left_drive.setPower(Left);
@@ -75,7 +74,7 @@ public class Main extends OpMode
                     left_drive.setPower(-Left);
                     right_drive.setPower(-Right);
                 }
-            }
+
 
 
         if(gamepad2.a)

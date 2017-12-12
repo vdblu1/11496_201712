@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -11,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Created by 120449 on 12/12/17.
  */
 
-public class MarkTestExtension extends OpMode{
+public class MainDriveExtension extends OpMode{
     DcMotor leftMotor = null; //hardwareMap.dcMotor.get("left");
     DcMotor rightMotor = null; //hardwareMap.dcMotor.get("right");
     DcMotorEx elbowMotor = null ;//= hardwareMap.dcMotor.get("elbow");
@@ -53,8 +52,6 @@ public class MarkTestExtension extends OpMode{
 
         //GemMover = hardwareMap.servo.get("GemMover");
 
-        //MediaPlayer mediaPlayer = MediaPlayer.create(hardwareMap.appContext, R.raw.nxtstartupsound);
-        //mediaPlayer.start();
         //shoulder.expo=.2;
         //elbow.expo = .2;
         //telemetry.setAutoClear(false);

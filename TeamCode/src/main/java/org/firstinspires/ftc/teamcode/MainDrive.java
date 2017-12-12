@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import java.lang.*;
 
 @TeleOp(name="Mark's Code", group="Test Code")
-public class MarkTest extends OpMode
+public class MainDrive extends OpMode
 {
-    MarkTestExtension needABetterName = new MarkTestExtension();
+    MainDriveExtension needABetterName = new MainDriveExtension();
 
     public void init()
     {}

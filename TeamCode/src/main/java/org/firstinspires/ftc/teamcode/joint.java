@@ -1,14 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-
-
 /**
  * Created by Mark on 11/18/2017.
  */
@@ -22,7 +18,6 @@ public class joint {
     double topSpeed = 1;
     PIDCoefficients PIDs = null;
     private Telemetry telemetry;
-
 
     public void init(String name, DcMotorEx jointMotor, double expo, double topSpeed, Telemetry telemetry, boolean ReverseBit){
         jointName = name;
@@ -60,8 +55,6 @@ public class joint {
             jointMotor.setTargetPosition(jointPosition);
         }
         PIDCoefficients PIDs = jointMotor.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
         telemetry.addData(jointName + " Tolerance ", jointMotor.getTargetPositionTolerance());
         telemetry.addData(jointName + " PID ", "%.04f, %.04f, %.04f", PIDs.p, PIDs.i, PIDs.d);
         telemetry.addData(jointName + " Current Position ", jointMotor.getCurrentPosition());
@@ -72,7 +65,6 @@ public class joint {
 
 
     public void moveJoint(double value){
-
         if (value!=0){
             holding=false;
             if (value>0) {
@@ -84,7 +76,6 @@ public class joint {
             jointMotor.setTargetPosition(jointPosition);
             jointMotor.setPower(Math.abs(Math.pow(value,2))/2);
         }
-
         else{
             if(!holding){
                 jointPosition=jointMotor.getCurrentPosition();
@@ -92,8 +83,7 @@ public class joint {
                 jointMotor.setPower(1);
                 holding = true;
             }
-
-            }
+        }
 
         //value = (expo * (Math.pow(value, 3))) + ((1 - expo) * value);
         //telemetry.addData(jointName + " Velocity ", jointMotor.getVelocity(AngleUnit.valueOf("Degrees")));

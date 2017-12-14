@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,8 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 /**
  * Created by 120449 on 12/12/17.
  */
-
-public class AutonomousMethods extends LinearOpMode {
+public class AutonomousMethods extends LinearOpMode{
     DcMotor leftMotor = null; //hardwareMap.dcMotor.get("left");
     DcMotor rightMotor = null; //hardwareMap.dcMotor.get("right");
     DcMotorEx elbowMotor = null ;//= hardwareMap.dcMotor.get("elbow");
@@ -21,14 +21,17 @@ public class AutonomousMethods extends LinearOpMode {
     Servo leftFinger = null;//= hardwareMap.servo.get("leftFinger");
     joint elbow = new joint();
     joint shoulder = new joint();
-
   //  ColorSensor Color;
 
     ElapsedTime holdTimer = new ElapsedTime();
 
     int position = 0;
     int gripAt = 0;
-    @Override public void runOpMode() {
+    public void runOpMode(){
+        waitForStart();
+    }
+
+    public void init1() {
         leftMotor = hardwareMap.dcMotor.get("left");
         rightMotor = hardwareMap.dcMotor.get("right");
         elbowMotor = (DcMotorEx)hardwareMap.get(DcMotor.class,"elbow");
@@ -43,8 +46,6 @@ public class AutonomousMethods extends LinearOpMode {
 
        // Color = hardwareMap.colorSensor.get("colorOnFinger");
 
-        waitForStart();
-        //Leave empty, this class is just a placeholder for autonomous methods
     }
 
     public void knockGem(String TeamColor) {

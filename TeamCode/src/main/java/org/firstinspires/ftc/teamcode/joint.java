@@ -18,6 +18,7 @@ public class joint {
     double topSpeed = 1;
     PIDCoefficients PIDs = null;
     private Telemetry telemetry;
+    public int value = 0;
 
     public void init(String name, DcMotorEx jointMotor, double expo, double topSpeed, Telemetry telemetry, boolean ReverseBit){
         jointName = name;

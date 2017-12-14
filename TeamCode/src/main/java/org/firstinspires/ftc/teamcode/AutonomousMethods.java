@@ -21,7 +21,8 @@ public class AutonomousMethods extends LinearOpMode {
     Servo leftFinger = null;//= hardwareMap.servo.get("leftFinger");
     joint elbow = new joint();
     joint shoulder = new joint();
-    ColorSensor Color;
+
+  //  ColorSensor Color;
 
     ElapsedTime holdTimer = new ElapsedTime();
 
@@ -40,7 +41,7 @@ public class AutonomousMethods extends LinearOpMode {
         rightFinger = hardwareMap.servo.get("rightFinger");
         leftFinger.setDirection(Servo.Direction.REVERSE);
 
-        Color = hardwareMap.colorSensor.get("colorOnFinger");
+       // Color = hardwareMap.colorSensor.get("colorOnFinger");
 
         waitForStart();
         //Leave empty, this class is just a placeholder for autonomous methods
@@ -56,7 +57,7 @@ public class AutonomousMethods extends LinearOpMode {
         shoulder.moveToClick(-1000); //this number we will probably have to play with, as it can range in testing from -1000,
                                            // to -1050
         if (TeamColor.equals("blue")) {
-            if (Color.blue() == 100) //We need to get the values that the color sensor would return for blue, and red.
+           /* if (Color.blue() == 100) //We need to get the values that the color sensor would return for blue, and red.
             {
                 //means red ball on left, so move left finger
                 leftFinger.setPosition(0);
@@ -66,9 +67,10 @@ public class AutonomousMethods extends LinearOpMode {
                 //means red ball on right, so move right finger.
                 rightFinger.setPosition(0);
 
-            }
+            }*/
+           telemetry.addData("TeamColor: ",TeamColor);
         } else if (TeamColor.equals("red")) {
-            if (Color.red() == 100)
+         /*  if (Color.red() == 100)
             {
                 //means blue ball on left, so move left finger.
                 leftFinger.setPosition(0);
@@ -76,14 +78,11 @@ public class AutonomousMethods extends LinearOpMode {
             if (Color.blue() == 100) {
                 //means blue ball on right, so move right finger.
                 rightFinger.setPosition(0);
-            }
+            }*/
+            telemetry.addData("TeamColor: ",TeamColor);
         } else {
             telemetry.addData("Teamcolor not set to Red or blue. Value is: ",TeamColor);
         }
-
-
-
-
 
     }
 

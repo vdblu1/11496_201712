@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 /**
  * Created by 120449 on 12/12/17.
  */
-public class AutonomousMethods extends LinearOpMode{
+public class AutonomousMethods extends KnockGem{
     DcMotor leftMotor = null; //hardwareMap.dcMotor.get("left");
     DcMotor rightMotor = null; //hardwareMap.dcMotor.get("right");
     DcMotorEx elbowMotor = null ;//= hardwareMap.dcMotor.get("elbow");

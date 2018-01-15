@@ -9,18 +9,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  * Created by Mark on 11/19/2017.
  */
 
-class Drivetrain {
-    //@Override
-
-    //double direction = (gamepad1.left_stick_x);
-    //double forward = (gamepad1.right_trigger);
-    //double reverse = (gamepad1.left_trigger);
+class drivetrain {
 
     DcMotor left_drive;
     DcMotor right_drive;
-    //double direction = 0;
-    //double forward = 0;
-    //double reverse = 0;
     public String DrivetrainName="";
     double myPower = 0;
     boolean dtStopped = true;
@@ -28,6 +20,7 @@ class Drivetrain {
     double pivotSensativity = 0.9; //Factor for exponential response to controls. -1 to 1. + less response, - more, 0 linear
     double triggSensativity = 0; //Factor for exponential response to controls. -1 to 1. + less response, - more, 0 linear
     boolean armControling = false;
+
 
     public void init (String name, DcMotor left_drive, DcMotor right_drive){
         DrivetrainName=name;
@@ -38,6 +31,8 @@ class Drivetrain {
         this.left_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE );
         this.right_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE );
     }
+
+
     public void armDrive(double pivValue, double fwdValue){//allows the arm operator fine control of the pivot
             if (pivValue!=0) {
                 pivValue = pivValue / 6;
@@ -77,5 +72,39 @@ class Drivetrain {
 
     }
 
+    /*
+    public void cAlgorithm() {
+        //Algorithm found on the web converted from C. Not tested to work
+        final float nJoyX = (gamepad1.right_stick_x);
+        float nJoyY = (gamepad1.right_trigger);
+        float fPivYLimit = 1;
+        //  int     nMotMixL;           // Motor (left)  mixed output           (-128..+127)
+        //  int     nMotMixR;           // Motor (right) mixed output           (-128..+127)
+        //float Forward = gamepad1.right_stick_x;
+        //float Backward = -gamepad1.right_stick_x;
+        float   nMotPremixL;
+        float   nMotPremixR;
+        float   fPivScale;      // Balance scale b/w drive and pivot    (   0..1   )
+
+        if (nJoyY > 0) {
+            // Forward
+            nMotPremixL = (nJoyX>=0)? 1 : (1 + nJoyX);
+            nMotPremixR = (nJoyX>=0)? (1 - nJoyX) : 1;
+        } else {
+            // Reverse
+            nMotPremixL = (nJoyX>=0)? (1 - nJoyX) : 1;
+            nMotPremixR = (nJoyX>=0)? 1 : (1 + nJoyX);
+        }
+
+        nMotPremixL = nMotPremixL * nJoyY/1;
+        nMotPremixR = nMotPremixR * nJoyY/1;
+        final float nPivSpeed = nJoyX;
+        fPivScale = (Math.abs(nJoyY)>fPivYLimit)? 0 : (1 - Math.abs(nJoyY)/fPivYLimit);
+        final float Left = (1-fPivScale)*nMotPremixL + fPivScale*( nPivSpeed);
+        final float Right = (1-fPivScale)*nMotPremixR + fPivScale*(-nPivSpeed);
+        left_drive.setPower(Left);
+        right_drive.setPower(Right);
+    }
+    */
 
 }

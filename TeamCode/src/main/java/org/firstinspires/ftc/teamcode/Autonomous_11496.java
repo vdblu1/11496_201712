@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * Created by 120449 on 11/9/17.
  */
-@Autonomous(name = "SafeZone")
-public class MoveForward extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "SafeZone")
+public class Autonomous_11496 extends LinearOpMode {
 
     DcMotor left_drive = null;
     DcMotor right_drive = null;

@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.lang.*;
 
 @TeleOp(name="Mark's Code", group="Test Code")
-public class MarkTest extends OpMode
+public class Teleop extends OpMode
 {
     DcMotor leftMotor = null; //hardwareMap.dcMotor.get("left");
     DcMotor rightMotor = null; //hardwareMap.dcMotor.get("right");
@@ -37,8 +37,10 @@ public class MarkTest extends OpMode
 
     joint elbow = new joint();
     joint shoulder = new joint();
-    Drivetrain myDrive = new Drivetrain();
+    drivetrain myDrive = new drivetrain();
     ElapsedTime holdTimer = new ElapsedTime();
+    gripper lowerGrip = new gripper();
+
 
     public void init()
     {
@@ -54,7 +56,7 @@ public class MarkTest extends OpMode
 
         leftFinger = hardwareMap.servo.get("leftFinger");
         rightFinger = hardwareMap.servo.get("rightFinger");
-        leftFinger.setDirection(Servo.Direction.REVERSE);
+        lowerGrip.init("lowerGrip", rightFinger, leftFinger, telemetry);
 
         //GemMover = hardwareMap.servo.get("GemMover");
 
@@ -169,60 +171,30 @@ public class MarkTest extends OpMode
                 pressingX = false;
             }
         }
+
+
+
         if ((gamepad2.right_stick_x!=0 || gamepad2.left_stick_x!=0)) {
             if ((gripPosition!=3)&&(gripPosition!=4)) {//allows the grip fingers to be manipulated as long as not holding
-                double leftFingerStart = leftFinger.getPosition();
-                double rightFingerStart = rightFinger.getPosition();
-                double servoInc = .01;
-                gripAt = 99;
-                if (gamepad2.left_stick_x > 0) {
-                    leftFinger.setPosition(leftFingerStart + servoInc);
-                } else if (gamepad2.left_stick_x < 0) {
-                    leftFinger.setPosition(leftFingerStart - servoInc);
-                }
-                if (gamepad2.right_stick_x > 0) {
-                    rightFinger.setPosition(rightFingerStart - servoInc);
-                } else if (gamepad2.right_stick_x < 0) {
-                    rightFinger.setPosition(rightFingerStart + servoInc);
-                }
+                lowerGrip.wiggleFingers(gamepad2.left_stick_x, gamepad2.right_stick_x);
             }
 
         }else {
-            if (gripPosition!=gripAt) {
-                switch (gripPosition) {
-                    case 0: //wide open start position
-                        rightFinger.setPosition(0);
-                        leftFinger.setPosition(0);
-                        gripAt = 0;
-                        break;
-                    case 1: //both 45 degrees from body
-                        rightFinger.setPosition(.25);
-                        leftFinger.setPosition(.25);
-                        gripAt = 1;
-                        break;
+            if (lowerGrip.gripAt != gripPosition){
+                lowerGrip.setGripPosition(gripPosition);
+                switch (lowerGrip.gripAt) {
                     case 2: //release position
-                        rightFinger.setPosition(.47);
-                        leftFinger.setPosition(.47);
                         if (holdTimer.seconds()<4){elbow.moveByClicks(100);}
-                        gripAt = 2;
                         break;
                     case 3: //hold position
-                        rightFinger.setPosition(.53);
-                        leftFinger.setPosition(.53);
                         holdTimer.reset();
                         elbow.moveByClicks(-100);
-                        gripAt = 3;
                         break;
-                    case 4: //snowplow position
-                        rightFinger.setPosition(.66);
-                        leftFinger.setPosition(.66);
-                        gripAt = 4;
-                        break;
+                }//end switch
+            }//end if
+        }//end if
 
-                }
-            }
-
-        }
+        
 
         shoulder.moveJointNew(gamepad2.left_stick_y);
         elbow.moveJointNew(gamepad2.right_stick_y);

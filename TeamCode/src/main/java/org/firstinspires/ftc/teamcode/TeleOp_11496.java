@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import java.lang.*;
 
-@TeleOp(name="Mark's Code", group="Test Code")
-public class Teleop extends OpMode
+@TeleOp(name="TeleOp_11496", group="Competition")
+public class TeleOp_11496 extends OpMode
 {
     DcMotor leftMotor = null; //hardwareMap.dcMotor.get("left");
     DcMotor rightMotor = null; //hardwareMap.dcMotor.get("right");

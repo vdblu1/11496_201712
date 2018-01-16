@@ -5,66 +5,109 @@ import android.media.MediaPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * Created by 120449 on 11/9/17.
  */
-@Autonomous(name="Autonomous_11496", group="Competition")
+//@Autonomous(name="Autonomous_11496", group="Competition")
 
 public class Autonomous_11496 extends LinearOpMode {
+    String alianceColor = "unkown"; // "red,blue"
+    String stoneLoc = "unknown"; // "timer,audience"
 
-    DcMotor left_drive = null;
-    DcMotor right_drive = null;
-    DcMotor elbowMotor = null ;//= hardwareMap.dcMotor.get("elbow");
+    DcMotor leftMotor = null; //hardwareMap.dcMotor.get("left");
+    DcMotor rightMotor = null; //hardwareMap.dcMotor.get("right");
+    DcMotorEx elbowMotor = null ;//= hardwareMap.dcMotor.get("elbow");
+    DcMotorEx shoulderMotor = null;//= hardwareMap.dcMotor.get("shoulder");
     Servo rightFinger = null ;//= hardwareMap.servo.get("rightFinger");
     Servo leftFinger = null;//= hardwareMap.servo.get("leftFinger");
+    Servo   gemMover ;//= hardwareMap.servo.get("GemMover");
+    int gripPosition = 0;
+    int gripAt = 0;
+    boolean pressingRB = false;
+    boolean pressingLB = false;
+    boolean pressingA = false;
+    boolean pressingB = false;
+    boolean pressingX = false;
+    boolean pressingY = false;
+    boolean armNeutral = false;
+    boolean driveNeutral = false;
+    boolean armControling = false;
+    boolean driveControling = false;
+    boolean dtStopped = true;
 
-    //  ColorSensor color;
-//Add Servo here for button push
+    joint elbow = new joint();
+    joint shoulder = new joint();
+    drivetrain myDrive = new drivetrain();
+    ElapsedTime holdTimer = new ElapsedTime();
+    gripper lowerGrip = new gripper();
+
+
+    public void acceptParam(String alianceColor, String stoneLoc){
+        this.alianceColor = alianceColor;
+        this.stoneLoc = stoneLoc;
+    }
     @Override
     public void runOpMode(){//} throws InterruptedException {
-        elbowMotor = hardwareMap.dcMotor.get("elbow");
-        elbowMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        telemetry.addData("alianceColor", alianceColor);
+        telemetry.addData("stoneLoc", stoneLoc);
+        telemetry.update();
 
-        //  color = hardwareMap.colorSensor.get("color");
-        // color.enableLed(true);
-        left_drive = hardwareMap.dcMotor.get("left");
-        right_drive = hardwareMap.dcMotor.get("right");
-        rightFinger = hardwareMap.servo.get("rightFinger");
+        leftMotor = hardwareMap.dcMotor.get("left");
+        rightMotor = hardwareMap.dcMotor.get("right");
+        myDrive.init("myDrive", leftMotor, rightMotor);
+
+        elbowMotor = (DcMotorEx)hardwareMap.get(DcMotor.class,"elbow");
+        elbow.init("elbow", elbowMotor, 0, 1,telemetry, false);
+
+        shoulderMotor = (DcMotorEx)hardwareMap.get(DcMotor.class,"shoulder");
+        shoulder.init("shoulder", shoulderMotor, 0, 1, telemetry, false);
+
         leftFinger = hardwareMap.servo.get("leftFinger");
+        rightFinger = hardwareMap.servo.get("rightFinger");
+        lowerGrip.init("lowerGrip", rightFinger, leftFinger, telemetry);
 
-
+        gemMover = hardwareMap.servo.get("gemMover");
 
         MediaPlayer mediaPlayer = MediaPlayer.create(hardwareMap.appContext, R.raw.nxtstartupsound);
         mediaPlayer.start();
 
 
         waitForStart();
-        rightFinger.setPosition(0.53);
-        leftFinger.setPosition(0.53);
 
-        elbowMotor.setTargetPosition(elbowMotor.getCurrentPosition()+100);
+        while (opModeIsActive()) {
+            //Once encoders are installed on drive motors set runtoposition to current position to set brakes
 
-        //elbowMotor.setTargetPosition(elbowMotor.getCurrentPosition());
-        //elbowMotor.setPower(.25);
-        //sleep(500);
+            lowerGrip.setGripPosition(3);
+            sleep(1000);
+            elbow.moveByClicks(-200);
+            sleep(800);
 
-        left_drive.setPower(-.5);
-        right_drive.setPower(-.5);
-        sleep(800);
-        left_drive.setPower(0);
-        right_drive.setPower(0);
+            while (gemMover.getPosition()<1) {
+                gemMover.setPosition(gemMover.getPosition() + .005);
+                sleep(15);
+            }
 
-        rightFinger.setPosition(0.47);
-        leftFinger.setPosition(0.47);
-        elbowMotor.setTargetPosition(0);
+            telemetry.addData("gemMover Pos", gemMover.getPosition());
+            telemetry.update();
+            sleep(3000);
 
-        left_drive.setPower(-.25);
-        right_drive.setPower(-.25);
-        sleep(150);
-        left_drive.setPower(0);
-        right_drive.setPower(0);
+            gemMover.setPosition(.58);
+            telemetry.addData("gemMover Pos", gemMover.getPosition());
+            telemetry.update();
+            sleep(3000);
+
+            elbow.moveByClicks(175);
+            sleep(1000);
+            lowerGrip.setGripPosition(0);
+            sleep(1000);
+            requestOpModeStop();
+
+        }
+
 
 
 

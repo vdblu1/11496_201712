@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
 import android.media.MediaPlayer;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -25,6 +27,8 @@ public class Autonomous_11496 extends LinearOpMode {
     Servo rightFinger = null ;//= hardwareMap.servo.get("rightFinger");
     Servo leftFinger = null;//= hardwareMap.servo.get("leftFinger");
     Servo   gemMover ;//= hardwareMap.servo.get("GemMover");
+    ColorSensor gemColorSense = null;
+    double gemMoverParkPos = .45;
     int gripPosition = 0;
     int gripAt = 0;
     boolean pressingRB = false;
@@ -39,17 +43,24 @@ public class Autonomous_11496 extends LinearOpMode {
     boolean driveControling = false;
     boolean dtStopped = true;
 
+
+    float hsvValues[] = {0F, 0F, 0F};// hsvValues is an array that will hold the hue, saturation, and value information.
+    final float values[] = hsvValues;// values is a reference to the hsvValues array.
+    final double SCALE_FACTOR = 255; // sometimes it helps to multiply the raw RGB values with a scale factor to amplify/attentuate the measured values.
+    String gemColor = "unknown";
+
     joint elbow = new joint();
     joint shoulder = new joint();
     drivetrain myDrive = new drivetrain();
     ElapsedTime holdTimer = new ElapsedTime();
     gripper lowerGrip = new gripper();
 
-
     public void acceptParam(String alianceColor, String stoneLoc){
         this.alianceColor = alianceColor;
         this.stoneLoc = stoneLoc;
     }
+
+
     @Override
     public void runOpMode(){//} throws InterruptedException {
         telemetry.addData("alianceColor", alianceColor);
@@ -71,6 +82,9 @@ public class Autonomous_11496 extends LinearOpMode {
         lowerGrip.init("lowerGrip", rightFinger, leftFinger, telemetry);
 
         gemMover = hardwareMap.servo.get("gemMover");
+        gemColorSense = hardwareMap.colorSensor.get("gemColorSense");
+
+
 
         MediaPlayer mediaPlayer = MediaPlayer.create(hardwareMap.appContext, R.raw.nxtstartupsound);
         mediaPlayer.start();
@@ -80,10 +94,10 @@ public class Autonomous_11496 extends LinearOpMode {
 
         while (opModeIsActive()) {
             //Once encoders are installed on drive motors set runtoposition to current position to set brakes
-
+            gemMover.setPosition(gemMoverParkPos);
             lowerGrip.setGripPosition(3);
             sleep(1000);
-            elbow.moveByClicks(-200);
+            //elbow.moveByClicks(-200);
             sleep(800);
 
             while (gemMover.getPosition()<1) {
@@ -95,15 +109,28 @@ public class Autonomous_11496 extends LinearOpMode {
             telemetry.update();
             sleep(3000);
 
-            gemMover.setPosition(.58);
+            Color.RGBToHSV((int) (gemColorSense.red() * SCALE_FACTOR),
+                    (int) (gemColorSense.green() * SCALE_FACTOR),
+                    (int) (gemColorSense.blue() * SCALE_FACTOR),
+                    hsvValues);
+            if ((hsvValues[0]>350) || (hsvValues[0]<10)) {
+                gemColor = "red";
+            }else if (hsvValues[0]>205 && (hsvValues[0]<255)){
+                gemColor = "blue";
+            }else gemColor = "unknown";
+
+            telemetry.addData("gemColor", gemColor);
             telemetry.addData("gemMover Pos", gemMover.getPosition());
             telemetry.update();
             sleep(3000);
 
-            elbow.moveByClicks(175);
+            gemMover.setPosition(gemMoverParkPos);
+            gemColorSense.enableLed(false);
+
+            //elbow.moveByClicks(175);
             sleep(1000);
             lowerGrip.setGripPosition(0);
-            sleep(1000);
+            sleep(100000);
             requestOpModeStop();
 
         }

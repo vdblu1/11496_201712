@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -24,8 +23,8 @@ public class Autonomous_11496 extends LinearOpMode {
     DcMotor rightMotor = null; //hardwareMap.dcMotor.get("right");
     DcMotorEx elbowMotor = null ;//= hardwareMap.dcMotor.get("elbow");
     DcMotorEx shoulderMotor = null;//= hardwareMap.dcMotor.get("shoulder");
-    Servo rightFinger = null ;//= hardwareMap.servo.get("rightFinger");
-    Servo leftFinger = null;//= hardwareMap.servo.get("leftFinger");
+    Servo lowerRightFinger = null ;//= hardwareMap.servo.get("lowerRightFinger");
+    Servo lowerLeftFinger = null;//= hardwareMap.servo.get("lowerLeftFinger");
     Servo   gemMover ;//= hardwareMap.servo.get("GemMover");
     ColorSensor gemColorSense = null;
     double gemMoverParkPos = .45;
@@ -77,9 +76,9 @@ public class Autonomous_11496 extends LinearOpMode {
         shoulderMotor = (DcMotorEx)hardwareMap.get(DcMotor.class,"shoulder");
         shoulder.init("shoulder", shoulderMotor, 0, 1, telemetry, false);
 
-        leftFinger = hardwareMap.servo.get("leftFinger");
-        rightFinger = hardwareMap.servo.get("rightFinger");
-        lowerGrip.init("lowerGrip", rightFinger, leftFinger, telemetry);
+        lowerLeftFinger = hardwareMap.servo.get("lowerLeftFinger");
+        lowerRightFinger = hardwareMap.servo.get("lowerRightFinger");
+        lowerGrip.init("lowerGrip", lowerRightFinger, lowerLeftFinger, telemetry);
 
         gemMover = hardwareMap.servo.get("gemMover");
         gemColorSense = hardwareMap.colorSensor.get("gemColorSense");

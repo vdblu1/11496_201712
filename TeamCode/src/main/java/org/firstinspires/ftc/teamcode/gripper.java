@@ -12,8 +12,8 @@ public class gripper {
     String gripName = null;
     //int gripPosition = 0;
     int gripAt = 0;
-    Servo rightFinger = null ;//= hardwareMap.servo.get("rightFinger");
-    Servo leftFinger = null;//= hardwareMap.servo.get("leftFinger");
+    Servo rightFinger = null ;//= hardwareMap.servo.get("lowerRightFinger");
+    Servo leftFinger = null;//= hardwareMap.servo.get("lowerLeftFinger");
     private Telemetry telemetry;
 
 

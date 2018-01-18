@@ -114,8 +114,23 @@ public class Autonomous_11496 extends LinearOpMode {
                     hsvValues);
             if ((hsvValues[0]>350) || (hsvValues[0]<10)) {
                 gemColor = "red";
+                
+                //Added this
+                leftMotor.setPower(0.4);
+                rightMotor.setPower(-0.4);
+                sleep(50);
+                leftMotor.setPower(0);
+                rightMotor.setPower(0);
+
             }else if (hsvValues[0]>205 && (hsvValues[0]<255)){
                 gemColor = "blue";
+
+                //Added this
+                leftMotor.setPower(-0.4);
+                rightMotor.setPower(0.4);
+                sleep(50);
+                leftMotor.setPower(0);
+                rightMotor.setPower(0);
             }else gemColor = "unknown";
 
             telemetry.addData("gemColor", gemColor);

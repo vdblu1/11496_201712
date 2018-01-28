@@ -27,8 +27,9 @@ public class TeleOp_11496 extends OpMode
     Servo lowerLeftFinger = null;//= hardwareMap.servo.get("lowerLeftFinger");
     Servo upperRightFinger = null ;//= hardwareMap.servo.get("lowerRightFinger");
     Servo upperLeftFinger = null;//= hardwareMap.servo.get("lowerLeftFinger");
+    Servo   gemMover ;//= hardwareMap.servo.get("GemMover");
+    double gemMoverParkPos = .45;
 
-    //Servo   GemMover ;//= hardwareMap.servo.get("GemMover");
     int gripPosition = 0;
     int gripAt = 0;
     boolean pressingRB = false;
@@ -89,6 +90,7 @@ public class TeleOp_11496 extends OpMode
         }
 
         upperGrip.init("upperGrip", upperRightFinger, upperLeftFinger, telemetry);
+        gemMover = hardwareMap.servo.get("gemMover");
 
         //GemMover = hardwareMap.servo.get("GemMover");
 
@@ -102,6 +104,7 @@ public class TeleOp_11496 extends OpMode
 
     @Override
     public void loop() {
+        gemMover.setPosition(gemMoverParkPos);
         /*if (((gripPosition==3)&&(!driveControling))&&((gamepad2.left_stick_x!=0)||(gamepad2.right_trigger!=0))){
             myDrive.armDrive(gamepad2.left_stick_x,gamepad2.right_trigger);//if holding the arm operator can drive
             armControling=true;

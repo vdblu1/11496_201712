@@ -96,7 +96,7 @@ public class Autonomous_11496 extends LinearOpMode {
             gemMover.setPosition(gemMoverParkPos);
             lowerGrip.setGripPosition(3);
             sleep(1000);
-            //elbow.moveByClicks(-200);
+            elbow.moveByClicks(-200);
             sleep(800);
 
             while (gemMover.getPosition()<1) {
@@ -116,20 +116,123 @@ public class Autonomous_11496 extends LinearOpMode {
                 gemColor = "red";
             }else if (hsvValues[0]>205 && (hsvValues[0]<255)){
                 gemColor = "blue";
-            }else gemColor = "unknown";
+            }else gemColor = "blue";
+
+
 
             telemetry.addData("gemColor", gemColor);
             telemetry.addData("gemMover Pos", gemMover.getPosition());
             telemetry.update();
-            sleep(3000);
+            //sleep(3000);
 
+            if (gemColor !="unknown") {
+                if (alianceColor == gemColor) {
+                    leftMotor.setPower(-0.1);
+                    rightMotor.setPower(.1);
+                    sleep(425);
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(0);
+                    sleep(300);
+                    leftMotor.setPower(0.1);
+                    rightMotor.setPower(-.1);
+                    sleep(300);
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(0);
+                } else {
+                    leftMotor.setPower(0.1);
+                    rightMotor.setPower(-.1);
+                    sleep(425);
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(0);
+                    sleep(300);
+                    leftMotor.setPower(-0.1);
+                    rightMotor.setPower(.1);
+                    sleep(300);
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(0);
+                }
+            }
+            sleep(300);
             gemMover.setPosition(gemMoverParkPos);
-            gemColorSense.enableLed(false);
 
-            //elbow.moveByClicks(175);
+            if (alianceColor == "red"){
+                if (stoneLoc=="timer"){
+                    leftMotor.setPower(.50);
+                    rightMotor.setPower(-.50);
+                    sleep(750);
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(0);
+                    sleep(100);
+                    leftMotor.setPower(.50);
+                    rightMotor.setPower(.50);
+                    sleep(1000);
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(0);
+                }else {
+
+                    leftMotor.setPower(-.50);
+                    rightMotor.setPower(-.50);
+                    sleep(1000);
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(0);
+                    sleep(100);
+                    rightMotor.setPower(-.50);
+                    leftMotor.setPower(.50);
+                    sleep(250);
+                    rightMotor.setPower(0);
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(.50);
+                    leftMotor.setPower(.50);
+                    sleep(800);
+                    rightMotor.setPower(0);
+                    leftMotor.setPower(0);
+                }
+            }
+            if (alianceColor == "blue"){
+                if (stoneLoc=="timer"){
+                    leftMotor.setPower(.50);
+                    rightMotor.setPower(-.50);
+                    sleep(150);
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(0);
+                    sleep(100);
+                    leftMotor.setPower(.50);
+                    rightMotor.setPower(.50);
+                    sleep(1200);
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(0);
+                }else {
+
+                    leftMotor.setPower(.50);
+                    rightMotor.setPower(.50);
+                    sleep(1000);
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(0);
+                    sleep(100);
+                    rightMotor.setPower(.50);
+                    leftMotor.setPower(-.50);
+                    sleep(250);
+                    rightMotor.setPower(0);
+                    leftMotor.setPower(0);
+                    rightMotor.setPower(.50);
+                    leftMotor.setPower(.50);
+                    sleep(800);
+                    rightMotor.setPower(0);
+                    leftMotor.setPower(0);
+                }
+            }
+
+
+            elbow.moveByClicks(100);
             sleep(1000);
             lowerGrip.setGripPosition(0);
-            sleep(100000);
+            sleep(1000);
+            leftMotor.setPower(-.5);
+            rightMotor.setPower(-.5);
+            sleep(200);
+            leftMotor.setPower(0);
+            rightMotor.setPower(0);
+            sleep(1000);
             requestOpModeStop();
 
         }

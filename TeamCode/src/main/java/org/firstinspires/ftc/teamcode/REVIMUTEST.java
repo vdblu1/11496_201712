@@ -92,7 +92,10 @@ public class REVIMUTEST extends LinearOpMode
         while (opModeIsActive()) {
             telemetry.update();
             if(angles.firstAngle < 90){
-                encoderDrive(TURN_SPEED, 3, -3, 3);
+                //encoderDrive(TURN_SPEED, 3, -3, 3);
+
+                leftDrive.setPower(TURN_SPEED);
+                rightDrive.setPower(-TURN_SPEED);
             }
             else {
                 leftDrive.setPower(0);

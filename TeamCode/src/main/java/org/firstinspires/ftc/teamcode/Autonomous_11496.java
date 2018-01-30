@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -27,6 +28,7 @@ public class Autonomous_11496 extends LinearOpMode {
     Servo lowerLeftFinger = null;//= hardwareMap.servo.get("lowerLeftFinger");
     Servo   gemMover ;//= hardwareMap.servo.get("GemMover");
     ColorSensor gemColorSense = null;
+    BNO055IMU imu;
     double gemMoverParkPos = .45;
     int gripPosition = 0;
     int gripAt = 0;
@@ -66,9 +68,11 @@ public class Autonomous_11496 extends LinearOpMode {
         telemetry.addData("stoneLoc", stoneLoc);
         telemetry.update();
 
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
         leftMotor = hardwareMap.dcMotor.get("left");
         rightMotor = hardwareMap.dcMotor.get("right");
-        myDrive.init("myDrive", leftMotor, rightMotor);
+        myDrive.init("myDrive", leftMotor, rightMotor, imu, telemetry);
 
         elbowMotor = (DcMotorEx)hardwareMap.get(DcMotor.class,"elbow");
         elbow.init("elbow", elbowMotor, 0, 1,telemetry, false);

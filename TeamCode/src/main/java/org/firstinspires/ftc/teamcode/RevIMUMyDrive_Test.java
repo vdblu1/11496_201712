@@ -159,12 +159,20 @@ public class RevIMUMyDrive_Test extends LinearOpMode{
             rightDrive.setPower(Math.abs(DRIVE_SPEED));
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS) && (leftDrive.isBusy() && rightDrive.isBusy())) {
-                if (angles.firstAngle > degress) {
+                if (angles.firstAngle < degress) {
                     telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
                     telemetry.addData("Path2", "Running at %7d :%7d",
                             leftDrive.getCurrentPosition(),
                             rightDrive.getCurrentPosition());
                     telemetry.update();
+                }
+                if (angles.firstAngle > degress) {
+                    telemetry.addData("Path1", "Running to %7d :%7d", (newLeftTarget * -1), (newRightTarget * -1));
+                    telemetry.addData("Path2", "Running at %7d :%7d",
+                            leftDrive.getCurrentPosition(),
+                            rightDrive.getCurrentPosition());
+                    telemetry.update();
+
                 }
             }
 
@@ -214,7 +222,7 @@ public class RevIMUMyDrive_Test extends LinearOpMode{
             rightDrive.setPower(Math.abs(DRIVE_SPEED));
 
             while (opModeIsActive() && (runtime.seconds() < timeoutS) && (leftDrive.isBusy() && rightDrive.isBusy())) {
-                if (angles.firstAngle > degrees) {
+                if (angles.firstAngle < degrees) {
                     telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
                     telemetry.addData("Path2", "Running at %7d :%7d",
                             leftDrive.getCurrentPosition(),

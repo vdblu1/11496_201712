@@ -1,8 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
-
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
+import static java.lang.Thread.currentThread;
 
 
 /**
@@ -20,9 +31,16 @@ class drivetrain {
     double pivotSensativity = 0.9; //Factor for exponential response to controls. -1 to 1. + less response, - more, 0 linear
     double triggSensativity = 0; //Factor for exponential response to controls. -1 to 1. + less response, - more, 0 linear
     boolean armControling = false;
+    Telemetry telemetry;
+    double directionMultiplier;
+    double DestinationAngles = 0;
+
+    Orientation angles;
+    BNO055IMU imu;
 
 
-    public void init (String name, DcMotor left_drive, DcMotor right_drive){
+    public void init (String name, DcMotor left_drive, DcMotor right_drive, BNO055IMU imu, Telemetry telemetry){
+
         DrivetrainName=name;
         this.left_drive=left_drive;
         this.right_drive=right_drive;
@@ -30,6 +48,18 @@ class drivetrain {
         this.right_drive.setDirection(DcMotorSimple.Direction.REVERSE);
         this.left_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE );
         this.right_drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE );
+        this.imu=imu;
+        this.telemetry=telemetry;
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled      = true;
+        parameters.loggingTag          = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        imu.initialize(parameters);
     }
 
 
@@ -68,6 +98,53 @@ class drivetrain {
                 left_drive.setPower(myPower * (direction+1));
                 right_drive.setPower(myPower);
             }
+        }
+
+    }
+    public void turn(int degrees, double power){
+        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        DestinationAngles = angles.firstAngle + degrees;
+        telemetry.addData("Heading",angles.firstAngle);
+        telemetry.addData("Dest Angle", DestinationAngles);
+        telemetry.update();
+        mysleep(3000);
+        if (degrees > 0) {
+
+            while (-angles.firstAngle < DestinationAngles) {
+                telemetry.addData("Heading",angles.firstAngle);
+                telemetry.addData("Dest Angle", DestinationAngles);
+                telemetry.update();
+
+                left_drive.setPower(power );
+                right_drive.setPower(-power );
+                angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            }
+            //right turn
+        } else if (degrees < 0) {
+
+            while (-angles.firstAngle > DestinationAngles) {
+                telemetry.addData("Heading",angles.firstAngle);
+                telemetry.addData("Dest Angle", DestinationAngles);
+                telemetry.update();
+
+                left_drive.setPower(-power );
+                right_drive.setPower(power );
+                angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            }
+
+        } else {}
+
+        left_drive.setPower(0);
+        right_drive.setPower(0);
+        telemetry.addData("motors off", null);
+        telemetry.update();
+        mysleep(3000);
+    }
+    public void mysleep(long sleepMillis){
+        try {
+            currentThread().sleep(sleepMillis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
     }

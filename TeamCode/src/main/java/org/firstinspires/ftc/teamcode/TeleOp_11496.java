@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -29,6 +30,7 @@ public class TeleOp_11496 extends OpMode
     Servo upperLeftFinger = null;//= hardwareMap.servo.get("lowerLeftFinger");
     Servo   gemMover ;//= hardwareMap.servo.get("GemMover");
     double gemMoverParkPos = .45;
+    BNO055IMU imu;
 
     int gripPosition = 0;
     int gripAt = 0;
@@ -56,7 +58,8 @@ public class TeleOp_11496 extends OpMode
     {
         leftMotor = hardwareMap.dcMotor.get("left");
         rightMotor = hardwareMap.dcMotor.get("right");
-        myDrive.init("myDrive", leftMotor, rightMotor);
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        myDrive.init("myDrive", leftMotor, rightMotor, imu, telemetry);
 
         elbowMotor = (DcMotorEx)hardwareMap.get(DcMotor.class,"elbow");
         elbow.init("elbow", elbowMotor, 0, 1,telemetry, false);
